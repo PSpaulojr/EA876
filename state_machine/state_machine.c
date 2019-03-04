@@ -24,13 +24,21 @@ int opera_fsm(void *this_fsm, char entrada) {
       if (eh_digito(entrada)) {
         maquina->estado_atual = 1;
       }
+      else maquina->estado_atual = 0;
       break;
 
     case 1:
       if (!eh_digito(entrada)) {
         maquina->estado_atual = 0;
       }
+      else maquina->estado_atual = 2;
       break;
+
+      case 2:
+        if (!eh_digito(entrada)){
+          maquina->estado_atual = 0;
+        }
+        else maquina->estado_atual = 2;
   }
   return (maquina->estado_atual);
 }
@@ -39,6 +47,7 @@ int main() {
   char buffer_in[100];
   int pointer;
   int achei_inteiro;
+  char c;
 
   for (int i=0; i<100; i++) buffer_in[i] = '\0';
 
@@ -53,7 +62,7 @@ int main() {
 
   pointer = 0;
   achei_inteiro = 0;
-  while (buffer_in[pointer] != '\0') {
+  while (buffer_in[pointer] != '\n') {
     opera_fsm((void*) (&maquina), buffer_in[pointer]);
     if (maquina.estado_atual == 1) achei_inteiro = 1;
     printf("Entrada: %c\tEstado: %d\n", buffer_in[pointer], maquina.estado_atual);
